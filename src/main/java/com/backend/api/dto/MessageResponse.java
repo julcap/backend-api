@@ -1,4 +1,4 @@
-package com.test.api.dto;
+package com.backend.api.dto;
 
 public class MessageResponse {
     private final String message;

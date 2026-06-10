@@ -1,4 +1,4 @@
-package com.test.api.models;
+package com.backend.api.models;
 
 import jakarta.persistence.*;
 import lombok.Builder;

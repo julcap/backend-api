@@ -1,10 +1,10 @@
-package com.test.api.controller;
+package com.backend.api.controller;
 
 import jakarta.validation.Valid;
-import com.test.api.dto.MessageResponse;
-import com.test.api.dto.UpdateProductRequest;
-import com.test.api.models.Product;
-import com.test.api.service.ProductService;
+import com.backend.api.dto.MessageResponse;
+import com.backend.api.dto.UpdateProductRequest;
+import com.backend.api.models.Product;
+import com.backend.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

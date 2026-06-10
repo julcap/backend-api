@@ -1,6 +1,6 @@
-package com.test.api.service;
+package com.backend.api.service;
 
-import com.test.api.models.User;
+import com.backend.api.models.User;
 
 import java.util.List;
 

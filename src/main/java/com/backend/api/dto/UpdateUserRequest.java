@@ -1,4 +1,4 @@
-package com.test.api.dto;
+package com.backend.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
