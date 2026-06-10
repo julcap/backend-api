@@ -6,6 +6,8 @@ import com.backend.api.models.User;
 import com.backend.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +34,19 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@Valid @RequestBody UpdateUserRequest request) {
-        User user = new User(request.getName(),request.getSurname(),"123" ,request.getBirthdate(),"Denmark","Address");
-        UserService.saveUser(user);
+    public ResponseEntity<User> addUser(@Valid @RequestBody UpdateUserRequest request) {
+        User user = new User(
+                request.getName(),
+                request.getSurname(),
+                request.getPhone(),
+                request.getBirthdate(),
+                request.getCountry(),
+                request.getAddress());
+
+        User savedUser = UserService.saveUser(user);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(savedUser);
     }
 
     @PutMapping("/{id}")
