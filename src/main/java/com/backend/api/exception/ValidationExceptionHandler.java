@@ -36,7 +36,7 @@ public class ValidationExceptionHandler {
     ) {
         Map<String, String> errors = new HashMap<>();
 
-        log.debug("Exception: {}",exception.toString());
+        log.debug("Validation exception: {}",exception.toString());
 
         if (exception.getCause() instanceof InvalidFormatException ife) {
             String field = ife.getPath().getFirst().getFieldName();
