@@ -1,23 +1,37 @@
 package com.test.api.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String surname;
     private String phone;
-    private Date birthday;
+    private LocalDate birthdate;
     private String country;
     private String address;
+
+    @Builder
+    public User(String name, String surname, String phone, LocalDate birthdate, String country, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.birthdate = birthdate;
+        this.country = country;
+        this.address = address;
+    }
 }
