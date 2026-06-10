@@ -5,12 +5,10 @@ import com.test.api.dto.UpdateUserRequest;
 import com.test.api.models.User;
 import com.test.api.service.UserService;
 import jakarta.validation.Valid;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 
 @RestController
