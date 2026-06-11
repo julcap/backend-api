@@ -38,6 +38,11 @@ public class OrderServiceImpl implements OrderService{
         OrderRepository.deleteById(id);
     }
 
+    @Override
+    public List<Order> getOrdersByUserId(Long userId) {
+        return OrderRepository.findByUserId(userId);
+    }
+
     // Additional method to get all Orders (optional)
     public List<Order> getAllOrders() {
         return OrderRepository.findAll();

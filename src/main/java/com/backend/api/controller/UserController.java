@@ -2,7 +2,9 @@ package com.backend.api.controller;
 
 import com.backend.api.dto.MessageResponse;
 import com.backend.api.dto.UpdateUserRequest;
+import com.backend.api.models.Order;
 import com.backend.api.models.User;
+import com.backend.api.service.OrderService;
 import com.backend.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService UserService;
+    private final OrderService orderService;
 
     @Autowired
-    public UserController(UserService UserService) {
+    public UserController(UserService UserService, OrderService orderService) {
         this.UserService = UserService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/{id}")
@@ -31,6 +35,16 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
         return UserService.getAllUsers();
+    }
+
+    @GetMapping("/{id}/orders")
+    public ResponseEntity<List<Order>> getUserOrders(@PathVariable Long id) {
+        User user = UserService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(orderService.getOrdersByUserId(id));
     }
 
     @PostMapping
