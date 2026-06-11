@@ -45,6 +45,16 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
+    @GetMapping("/{id}/items")
+    public ResponseEntity<Set<OrderItem>> getOrderItems(@PathVariable Long id) {
+        Order order = orderService.getOrderById(id);
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(order.getOrderItems());
+    }
+
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody CreateOrderRequest request) {
         User user = userService.getUserById(request.getUserId());

@@ -126,6 +126,54 @@ class OrderControllerTest {
     }
 
     @Test
+    void shouldGetOrderItems() throws Exception {
+        User user = saveUser();
+        Product keyboard = saveProduct("Keyboard", 89.99);
+        Product mouse = saveProduct("Mouse", 49.99);
+        Order order = orderRepository.save(new Order(
+                user,
+                Set.of(
+                        new OrderItem(keyboard, 2L, 89.99, 179.98),
+                        new OrderItem(mouse, 1L, 49.99, 49.99)
+                ),
+                OrderStatus.PAID,
+                LocalDate.of(2026, 6, 11),
+                null
+        ));
+
+        mockMvc.perform(get("/api/orders/{id}/items", order.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[*].quantity", containsInAnyOrder(2, 1)))
+                .andExpect(jsonPath("$[*].unitPrice", containsInAnyOrder(89.99, 49.99)))
+                .andExpect(jsonPath("$[*].totalPrice", containsInAnyOrder(179.98, 49.99)))
+                .andExpect(jsonPath("$[*].product.id", containsInAnyOrder(keyboard.getId().intValue(), mouse.getId().intValue())))
+                .andExpect(jsonPath("$[*].product.name", containsInAnyOrder("Keyboard", "Mouse")));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenOrderHasNoItems() throws Exception {
+        User user = saveUser();
+        Order order = orderRepository.save(new Order(
+                user,
+                Set.of(),
+                OrderStatus.PLACED,
+                LocalDate.of(2026, 6, 11),
+                null
+        ));
+
+        mockMvc.perform(get("/api/orders/{id}/items", order.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenGettingItemsForMissingOrder() throws Exception {
+        mockMvc.perform(get("/api/orders/{id}/items", 999L))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void shouldGetAllOrders() throws Exception {
         User user = saveUser();
         Product keyboard = saveProduct("Keyboard", 89.99);
