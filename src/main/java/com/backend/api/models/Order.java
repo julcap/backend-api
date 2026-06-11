@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Table(name = "orders")
 @Getter
@@ -17,18 +22,39 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
-    private Long userId;
-    private Long quantity;
-    private Double unitPrice;
-    private Double totalPrice;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems = new LinkedHashSet<>();
+
+    private String status;
+    private LocalDate purchaseDate;
+    private LocalDate shippedDate;
 
     @Builder
-    public Order(Long productId, Long userId, Long quantity, Double unitPrice, Double totalPrice) {
-        this.productId = productId;
-        this.userId = userId;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
+    public Order(User user, Set<OrderItem> orderItems, String status, LocalDate purchaseDate, LocalDate shippedDate) {
+        this.user = user;
+        setOrderItems(orderItems);
+        this.status = status;
+        this.purchaseDate = purchaseDate;
+        this.shippedDate = shippedDate;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems.clear();
+        if (orderItems == null) {
+            return;
+        }
+
+        orderItems.stream()
+                .filter(Objects::nonNull)
+                .forEach(this::addOrderItem);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }

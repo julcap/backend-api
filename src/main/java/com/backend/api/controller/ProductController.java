@@ -1,5 +1,6 @@
 package com.backend.api.controller;
 
+import com.backend.api.dto.CreateProductRequest;
 import jakarta.validation.Valid;
 import com.backend.api.dto.MessageResponse;
 import com.backend.api.dto.UpdateProductRequest;
@@ -32,8 +33,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
-        productService.saveProduct(product);
+    public Product addProduct(@Valid CreateProductRequest request) {
+        Product product = new Product(request.getName(), request.getDescription(), request.getPrice(), request.getAvailable());
+        return productService.saveProduct(product);
     }
 
     @PutMapping("/{id}")
@@ -45,6 +47,7 @@ public class ProductController {
         existingProduct.setName(request.getName());
         existingProduct.setDescription(request.getDescription());
         existingProduct.setPrice(request.getPrice());
+        existingProduct.setAvailable(request.getAvailable());
         productService.saveProduct(existingProduct);
         return null;
     }
