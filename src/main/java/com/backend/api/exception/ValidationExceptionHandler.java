@@ -8,8 +8,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -44,6 +46,11 @@ public class ValidationExceptionHandler {
 
             if (targetType.equals(LocalDate.class)) {
                 errors.put(field, "Invalid date format. Expected format: yyyy-MM-dd");
+            } else if (targetType.isEnum()) {
+                String validValues = Arrays.stream(targetType.getEnumConstants())
+                        .map(Object::toString)
+                        .collect(Collectors.joining(", "));
+                errors.put(field, "Invalid value. Valid values are: " + validValues);
             } else {
                 errors.put(field, "Invalid value");
             }
