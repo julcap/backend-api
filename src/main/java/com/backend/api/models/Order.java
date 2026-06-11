@@ -29,12 +29,13 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
     private LocalDate purchaseDate;
     private LocalDate shippedDate;
 
     @Builder
-    public Order(User user, Set<OrderItem> orderItems, String status, LocalDate purchaseDate, LocalDate shippedDate) {
+    public Order(User user, Set<OrderItem> orderItems, OrderStatus status, LocalDate purchaseDate, LocalDate shippedDate) {
         this.user = user;
         setOrderItems(orderItems);
         this.status = status;

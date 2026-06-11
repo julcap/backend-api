@@ -2,6 +2,7 @@ package com.backend.api.controller;
 
 import com.backend.api.models.Order;
 import com.backend.api.models.OrderItem;
+import com.backend.api.models.OrderStatus;
 import com.backend.api.models.Product;
 import com.backend.api.models.User;
 import com.backend.api.repository.OrderRepository;
@@ -191,7 +192,7 @@ class UserControllerTest {
         Order order = orderRepository.save(new Order(
                 user,
                 Set.of(orderItem),
-                "PLACED",
+                OrderStatus.PLACED,
                 LocalDate.of(2026, 6, 11),
                 null
         ));

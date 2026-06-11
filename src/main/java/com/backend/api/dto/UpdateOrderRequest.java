@@ -1,5 +1,6 @@
 package com.backend.api.dto;
 
+import com.backend.api.models.OrderStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class UpdateOrderRequest {
     @NotEmpty(message = "Order items are required")
     private List<@Valid OrderItemRequest> items;
 
-    private String status;
+    private OrderStatus status;
 
     private LocalDate purchaseDate;
 
